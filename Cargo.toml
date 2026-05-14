@@ -1,0 +1,12 @@
+[package]
+name = "esai_community_edition"
+version = "1.0.0"
+edition = "2021"
+description = "Free, Zero-Telemetry Local AI Engine"
+
+[dependencies]
+tokio = { version = "1", features = ["full"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+axum = "0.6"
+tower-http = { version = "0.4", features = ["cors"] }

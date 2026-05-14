@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ESAI Community Matrix</title>
+    <style>
+        body { 
+            background-color: #0d1117; 
+            color: #c9d1d9; 
+            font-family: 'Courier New', monospace; 
+            padding: 20px; 
+        }
+        .container { 
+            max-width: 900px; 
+            margin: 0 auto; 
+            border: 1px solid #30363d; 
+            padding: 30px; 
+            border-radius: 12px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            background: #161b22;
+        }
+        h1 { color: #58a6ff; margin-top: 0; }
+        .tagline { color: #8b949e; font-size: 14px; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #30363d;}
+        .chat-box { 
+            height: 450px; 
+            overflow-y: auto; 
+            border: 1px solid #30363d; 
+            padding: 15px; 
+            margin-bottom: 20px; 
+            background: #010409; 
+            border-radius: 6px;
+        }
+        .message { margin-bottom: 15px; line-height: 1.5; }
+        .user { color: #79c0ff; }
+        .esai { color: #3fb950; }
+        .controls { display: flex; gap: 10px; }
+        input { 
+            flex-grow: 1; 
+            padding: 15px; 
+            background: #0d1117; 
+            color: white; 
+            border: 1px solid #30363d; 
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+        }
+        button { 
+            padding: 15px 30px; 
+            background: #238636; 
+            color: white; 
+            border: none; 
+            border-radius: 6px;
+            cursor: pointer; 
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+        }
+        button:hover { background: #2ea043; }
+        .upsell {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(157, 78, 221, 0.1);
+            border: 1px solid #9D4EDD;
+            border-radius: 6px;
+            color: #d2a8ff;
+            text-align: center;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>ESAI COMMUNITY EDITION</h1>
+        <div class="tagline">100% Free. Zero Telemetry. Native Local Execution. Stick it to the AI Cloud Barons.</div>
+        
+        <div class="chat-box" id="chat">
+            <div class="message esai">[SYSTEM] Native engine connected on Port 8080. Waiting for intent...</div>
+        </div>
+        
+        <div class="controls">
+            <input type="text" id="prompt" placeholder="Enter your structural intent..." onkeypress="if(event.key === 'Enter') send()">
+            <button onclick="send()">Synthesize</button>
+        </div>
+
+        <div class="upsell">
+            > Ready for Enterprise Scale? Upgrade to the $49 Sovereign SDK to unlock the SAGE Security Firewall, Immutable Ledger Forensics, and the Glassmorphic God-View IDE.
+        </div>
+
+        <div style="margin-top: 15px; padding: 15px; background: rgba(0, 240, 255, 0.05); border: 1px solid #00F0FF; border-radius: 6px; color: #79c0ff; text-align: center; font-size: 14px;">
+            <strong>[FEEDBACK REQUESTED]</strong> We are dropping this native engine for free to challenge the cloud monopolies. Test the speed. Push the limits. Send your feedback and bug reports to the creators to help shape the future of Sovereign AI.
+        </div>
+    </div>
+
+    <script>
+        async function send() {
+            let input = document.getElementById('prompt').value;
+            if(!input) return;
+            
+            let chat = document.getElementById('chat');
+            chat.innerHTML += `<div class="message user">[USER] ${input}</div>`;
+            document.getElementById('prompt').value = '';
+            
+            try {
+                let res = await fetch('http://localhost:8080/api/synthesize', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({intent: input})
+                });
+                let data = await res.json();
+                chat.innerHTML += `<div class="message esai">[ESAI] ${data.message}</div>`;
+            } catch (e) {
+                chat.innerHTML += `<div class="message" style="color:red">[ERROR] Engine offline. Please execute 'cargo run --release' in the terminal.</div>`;
+            }
+            chat.scrollTop = chat.scrollHeight;
+        }
+    </script>
+</body>
+</html>
